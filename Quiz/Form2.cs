@@ -889,8 +889,13 @@ namespace Quiz
         {
             if (a == 0)
             {
+<<<<<<< HEAD
                 
                 StreamReader streamReader = new StreamReader($"Quiz\\{Path_}");
+=======
+               // MessageBox.Show(Path_);
+                StreamReader streamReader = new StreamReader(Path_);
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<QuestionBlock>));
                 var obj = (List<QuestionBlock>)xmlSerializer.Deserialize(streamReader);
                 a++;
@@ -1042,7 +1047,11 @@ namespace Quiz
 
                 if (item.Contains(Path_))
                 {
+<<<<<<< HEAD
                     Path_ = Path.GetFileName(item);
+=======
+                    Path_ = item;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                 }
             }
             ResetForm();

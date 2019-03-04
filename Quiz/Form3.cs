@@ -653,16 +653,16 @@ namespace Quiz
                     point.Y = 477;
                     if (createQuestionCounter == questionBlock.Count - 1)
                     {
-                        point.X = 200;
+                        point.X = 800;
                         createButton("Next", false);
-                        point.X = 100;
+                        point.X = 700;
                         createButton("Back", true);
                     }
                     else
                     {
-                        point.X = 200;
+                        point.X = 800;
                         createButton("Next", true);
-                        point.X = 100;
+                        point.X = 700;
                         createButton("Back", true);
                     }
 
@@ -712,16 +712,16 @@ namespace Quiz
                     point.Y = 477;
                     if (createQuestionCounter == 0)
                     {
-                        point.X = 200;
+                        point.X = 800;
                         createButton("Next", true);
-                        point.X = 100;
+                        point.X = 700;
                         createButton("Back", false);
                     }
                     if (questionBlock.Count != 0 && createQuestionCounter <= questionBlock.Count)
                     {
-                        point.X = 200;
+                        point.X =800;
                         createButton("Next", true);
-                        point.X = 100;
+                        point.X = 700;
                         createButton("Back", true);
                     }
                     point.Y = pointy + 70;
@@ -743,6 +743,13 @@ namespace Quiz
                 point.X = 803;
                 point.Y = 150;
                 createButton("Add", true);
+<<<<<<< HEAD
+=======
+                point.Y = 197;
+                createButton("Remove", false);
+                point.Y = 97;
+               // createButton("Delete Page", true);
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                 point.Y = 120;
                 createButton("Remove", false);
                 point.Y = 90;
@@ -757,10 +764,17 @@ namespace Quiz
                 label.Location = new Point(point.X-10, point.Y-20);
                 label.Name = "Save";
                 this.Controls.Add(label);
+<<<<<<< HEAD
                 point.Y = 200;
                 point.X = 803;
                 createButton("Next", false);
                 point.X = 720;
+=======
+                point.Y = 477;
+                point.X = 800;
+                createButton("Next", false);
+                point.X = 700;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                 createButton("Back", false);
                 ButonEnableTrue();
                 createQuestionCounter++;
@@ -879,9 +893,15 @@ namespace Quiz
                 createButton("Add", true);
                     point.Y = 120;
                     createButton("Remove", false);
+<<<<<<< HEAD
                     point.Y = 90;
                 //createButton("Delete Page", true);
                 //point.Y = 120;
+=======
+                    point.Y = 97;
+              //  createButton("Delete Page", true);
+                point.Y = 120;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                 createButton("AddPage", true);
                     point.X = 20;
                     point.Y = 36;
@@ -889,16 +909,28 @@ namespace Quiz
                     point.Y = 200;
                     if (createQuestionCounter == questionBlock.Count-1  )
                     {
+<<<<<<< HEAD
                         point.X = 803;
                         createButton("Next", false);
                         point.X = 720;
+=======
+                        point.X = 800;
+                        createButton("Next", false);
+                        point.X = 700;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                         createButton("Back", true);
                     }
                     else
                     {
+<<<<<<< HEAD
                         point.X = 803;
                         createButton("Next", true);
                         point.X = 720;
+=======
+                        point.X = 800;
+                        createButton("Next", true);
+                        point.X = 700;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                         createButton("Back", true);
                     }
 
@@ -944,9 +976,15 @@ namespace Quiz
                     createButton("Add", true);
                     point.Y = 120;
                     createButton("Remove", false);
+<<<<<<< HEAD
                     point.Y = 90;
                 //createButton("Delete Page", true);
                 //point.Y = 120;
+=======
+                    point.Y = 97;
+               // createButton("Delete Page", true);
+                point.Y = 120;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                 createButton("AddPage", true);
                     point.X = 20;
                     point.Y = 36;
@@ -966,9 +1004,15 @@ namespace Quiz
                     }
                     if (questionBlock.Count != 0 && createQuestionCounter <= questionBlock.Count)
                 {
+<<<<<<< HEAD
                         point.X = 803;
                         createButton("Next", true);
                     point.X = 720;
+=======
+                        point.X = 800;
+                        createButton("Next", true);
+                    point.X = 700;
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
                     createButton("Back", true);
                 }
                     point.Y = pointy+70;
@@ -1085,7 +1129,7 @@ namespace Quiz
             }
             point.X = 300;
             createButton("Sub", true);
-            point.X = 200;
+            point.X = 00;
             if (counter == questionBlocks.Count - 1)
             {
                 createButton("Next", false);

@@ -22,8 +22,13 @@ namespace Quiz
     public partial class Form1 : Form
     {
         List<User> Users = new List<User>();
+<<<<<<< HEAD
         User User = new User();
         //Point point;
+=======
+        Point point;
+
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
         public Form1()
         {
             InitializeComponent();
@@ -259,6 +264,7 @@ namespace Quiz
             panel3.BackgroundImage = Image.FromFile("Password.png");
             this.Controls.Add(panel3);
 
+<<<<<<< HEAD
             Panel panel4 = new Panel();
             panel4.Location = new Point(255, 160);
             panel4.Size = new Size(23, 29);
@@ -316,6 +322,37 @@ namespace Quiz
         private void Panel4_MouseClick(object sender, MouseEventArgs e)
         {
             foreach (var item in Controls)
+=======
+                    }
+                    ResetForm();
+                    Login();
+                }
+            }
+            if(button.Text== "Registr")
+            {
+                ResetForm();
+                TextBox textBox = new TextBox();
+                textBox.Location = new Point(400, 87);
+                textBox.Size = new Size(400, 20);
+                textBox.MouseClick += TextBox_MouseClick;
+                textBox.MouseLeave += TextBox_MouseLeave;
+                textBox.Text = "Enter Mail";
+                textBox.Name = "Mail";
+                TextBox textBox1 = new TextBox();
+                this.Controls.Add(textBox);
+                textBox1.Location = new Point(400, 141);
+                textBox1.Size = new Size(400, 20);
+                textBox1.MouseClick += TextBox1_MouseClick;
+                textBox1.MouseLeave += TextBox1_MouseLeave;
+                textBox1.Text = "Enter Password";
+                textBox1.Name = "Password";
+                this.Controls.Add(textBox1);
+                point.X = 100;
+                point.Y = 60;
+                createButton("Ok", true);
+            }
+            if (button.Text=="Sign in")
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
             {
                 if(item is Panel panel && panel.Location.X==255)
                 {
@@ -345,6 +382,24 @@ namespace Quiz
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+            if(button.Text=="Quiz")
+            {
+                ResetForm();
+                Form2 form2 = new Form2();
+                
+                form2.ShowDialog();
+            }
+            if (button.Text== "Create Test")
+            {
+                ResetForm();
+                Form3 form3 = new Form3();
+                this.Visible = false;
+                form3.ShowDialog();
+               
+            }
+>>>>>>> e6c182f695b69086a816a2a5189249609c244eda
         }
         private void Button2_Click(object sender, EventArgs e)
         {
