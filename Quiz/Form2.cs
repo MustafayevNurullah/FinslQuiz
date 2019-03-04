@@ -1,15 +1,10 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -17,7 +12,7 @@ namespace Quiz
 {
     public partial class Form2 : Form
     {
-       int  question_counter;
+        int question_counter;
         string Path_;
         List<int> Ansvercounter = new List<int>();
         List<string> Asci = new List<string>() {
@@ -55,13 +50,13 @@ namespace Quiz
         List<int> vsAnswer = new List<int>();
         List<int> RandomQuestion = new List<int>();
         List<int> RandomAnswer = new List<int>();
+        string color;
         int createQuestionCounter = -1;
         int a = 0;
         int correct = 0;
         int wrong = 0;
-
         int null_ = 0;
-
+        int YLocation;
         int AsciCounter = 0;
         int counter;
         Point point = new Point();
@@ -72,7 +67,7 @@ namespace Quiz
         {
             PictureBox radioButton = new PictureBox();
             radioButton.Size = new Size(20, 20);
-            radioButton.Location = new Point(180, point.Y - 13);
+            radioButton.Location = new Point(100, point.Y - 5);
             radioButton.Name = Name;
             if (text == "Yes")
             {
@@ -146,6 +141,7 @@ namespace Quiz
             {
                 foreach (var item in Controls)
                 {
+                  
                     if (item is ListView listView)
                     {
                         listView.Dispose();
@@ -162,7 +158,7 @@ namespace Quiz
                     {
                         radioButton.Dispose();
                     }
-                    if(item is PictureBox pictureBox)
+                    if (item is PictureBox pictureBox)
                     {
                         pictureBox.Dispose();
                     }
@@ -172,8 +168,30 @@ namespace Quiz
         void CreateTextLabel(string Text, string Name, bool bool_)
         {
             TextBox label = new TextBox();
-            label.Size = new Size(571, 81);
-            label.Location = new Point(197, point.Y);
+            YLocation = 0;
+            label.Multiline = true;
+            if (Text.Length < 60 )
+            {
+                label.Size = new Size(450, 25);
+                YLocation = 0;
+
+            }
+            if (Text.Length>60 && Text.Length < 120)
+            {
+                YLocation = 10;
+
+                label.Size = new Size(450, 35);
+
+            }
+            if (Text.Length > 120 && Text.Length < 280)
+            {
+                YLocation = 20;
+
+                label.Size = new Size(450, 45);
+
+            }
+           // label.Size = new Size(450,25);
+            label.Location = new Point(127, point.Y);
             label.Name = "Test";
             label.Enabled = bool_;
             label.Text = counter + 1 + Text;
@@ -182,15 +200,54 @@ namespace Quiz
         void CreateAnswerLabel(string Text, bool bool_)
         {
             TextBox label = new TextBox();
-            label.Size = new Size(464, 44);
-            label.Location = new Point(200, point.Y);
+            if(color=="Red")
+            {
+                label.ForeColor = Color.Red;
+            }
+            if (color == "Green")
+            {
+                label.ForeColor = Color.Green;
+            }
+            label.Multiline = true;
+            label.Location = new Point(142, point.Y);
+            if (Text.Length < 55)
+            {
+                label.Size = new Size(435, 25);
+                YLocation = 0;
+            }
+            if (Text.Length > 55 && Text.Length < 110)
+            {
+                label.Size = new Size(435, 35);
+                YLocation = 10;
+                point.Y += 10;
+            }
+            if (Text.Length > 110 && Text.Length < 265)
+            {
+                point.Y += 20;
+                YLocation = 20;
+                label.Size = new Size(435, 45);
+            }
+           // label.Size = new Size(464, 44);
             //  MessageBox.Show(AsciCounter.ToString());
             label.Enabled = bool_;
-
+            label.Enter += Label_Enter;
+            label.Leave += Label_Leave;
             label.Name = AsciCounter.ToString();
             label.Text = Asci[AsciCounter] + ". " + Text;
             this.Controls.Add(label);
         }
+
+        private void Label_Leave(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Label_Enter(object sender, EventArgs e)
+        {
+            var a = (sender is TextBox);
+            MessageBox.Show(Cursor.Position.ToString());
+        }
+
         void createButton(string Text, bool enable)
         {
             Button button = new Button();
@@ -216,13 +273,13 @@ namespace Quiz
         {
             RadioButton radioButton = new RadioButton();
             radioButton.Size = new Size(15, 15);
-            radioButton.Location = new Point(180, point.Y - 13);
+            radioButton.Location = new Point(124, point.Y);
             radioButton.Name = Name;
             for (int i = 0; i < vsQuestion.Count; i++)
             {
-                if(vsQuestion[i]==questionBlocks[counter].id)
+                if (vsQuestion[i] == questionBlocks[counter].id)
                 {
-                    if(vsAnswer[i]==Convert.ToInt32( Name))
+                    if (vsAnswer[i] == Convert.ToInt32(Name))
                     {
                         radioButton.Checked = true;
                     }
@@ -316,7 +373,7 @@ namespace Quiz
         private void Button_Click(object sender, EventArgs e)
         {
             Button button = sender as Button;
-            if(button.Text=="Print")
+            if (button.Text == "Print")
             {
                 bool q = false;
                 //  File.CreateText("Text.txt");
@@ -324,7 +381,7 @@ namespace Quiz
                 using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "PDF file|*.pdf", ValidateNames = true })
                 {
 
-                    if(sfd.ShowDialog()==DialogResult.OK)
+                    if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         iTextSharp.text.Document doc = new iTextSharp.text.Document(PageSize.A4.Rotate());
 
@@ -385,11 +442,11 @@ namespace Quiz
                                     else
                                     {
 
-                                    
-                                    doc.Add(new iTextSharp.text.Paragraph($"{Asci[AsciCounter]}) {questionBlocks_[i].Answers[j].Text}"));
-                                    AsciCounter++;
-                                }
+
+                                        doc.Add(new iTextSharp.text.Paragraph($"{Asci[AsciCounter]}) {questionBlocks_[i].Answers[j].Text}"));
+                                        AsciCounter++;
                                     }
+                                }
                             }
                         }
 
@@ -513,20 +570,21 @@ namespace Quiz
 
 
             }
-            if(button.Text=="Size")
+            if (button.Text == "Size")
             {
                 foreach (var item in Controls)
                 {
-                    if(item is TextBox textBox)
+                    if (item is TextBox textBox)
                     {
                         if (textBox.Text != string.Empty &&
                         int.TryParse(textBox.Text, out question_counter))
                         {
                             ResetForm();
+                            this.BackColor = Color.AliceBlue;
                             FormLoad("");
                         }
                     }
-                }                
+                }
             }
             if (button.Text == "Sum")
             {
@@ -540,8 +598,77 @@ namespace Quiz
                 point.Y += 70;
                 PictureBox("");
                 createTextBoxSum(null_.ToString());
-                point.X = 70;
-                point.Y = 70;
+                //Button Wbutton = new Button();
+                //Wbutton.Text = wrong.ToString();
+                //Wbutton.BackColor = Color.Red;
+                //wrong = (wrong * 100) / questionBlock.Count;
+                //wrong *= 5;
+                //if(wrong<40)
+                //{
+                //Wbutton.Location = new Point(565,230);
+
+                //Wbutton.Size = new Size(50,10);
+                //}
+                //else
+                //{
+                //    Wbutton.Location = new Point(565, 230-wrong);
+
+                //    Wbutton.Size = new Size(50, wrong);
+
+                //}
+                //this.Controls.Add(Wbutton);
+
+                //Button cbutton = new Button();
+                //cbutton.Text = correct.ToString();
+                //cbutton.BackColor = Color.Green;
+                //correct = (correct * 100) / questionBlock.Count;
+                //correct *= 5;
+                //if (correct < 40)
+                //{
+                //cbutton.Location = new Point(493, 230);
+
+                //    cbutton.Size = new Size(50, 10);
+                //}
+                //else
+                //{
+                //    cbutton.Location = new Point(493, 230-correct);
+
+                //    cbutton.Size = new Size(50, correct);
+
+                //}
+                //cbutton.Size = new Size(50, correct);
+                //this.Controls.Add(cbutton);
+
+                //Button nbutton = new Button();
+                //nbutton.Text = null_.ToString();
+                //nbutton.BackColor = Color.Gray;
+                //null_ = (null_ * 100) / questionBlock.Count;
+                //null_ *= 5;
+                //if (null_ <40 )
+                //{
+                //nbutton.Location = new Point(413, 230);
+
+                //    cbutton.Size = new Size(50, 10);
+                //}
+                //else
+                //{
+                //    if (230 - null_ < 29)
+                //    {
+                //        nbutton.Location = new Point(413, 29);
+                //    nbutton.Size = new Size(50, null_);
+                //    }
+                //    else
+                //    {
+                //    nbutton.Size = new Size(50, null_);
+                //        nbutton.Location = new Point(413, 230-null_);
+                //    }
+                //}
+                //this.Controls.Add(nbutton);
+
+
+
+                point.X = 12;
+                point.Y = 12;
                 createButton("Print", true);
             }
             if (button.Text == "Next")
@@ -550,8 +677,8 @@ namespace Quiz
                 {
                     vsQuestion.Add(questionBlocks[counter].id);
                     vsAnswer.Add(Convert.ToInt32(ControlRadioButton()));
-                //    questionBlocks.Remove(questionBlocks[counter]);
-                   // counter--;
+                    //    questionBlocks.Remove(questionBlocks[counter]);
+                    // counter--;
                 }
                 ResetForm();
                 FormLoad("Next");
@@ -562,7 +689,7 @@ namespace Quiz
                 {
                     vsQuestion.Add(questionBlocks[counter].id);
                     vsAnswer.Add(Convert.ToInt32(ControlRadioButton()));
-                //    questionBlocks.Remove(questionBlocks[counter]);
+                    //    questionBlocks.Remove(questionBlocks[counter]);
                 }
                 ResetForm();
                 FormLoad("Back");
@@ -584,7 +711,7 @@ namespace Quiz
                                 {
                                     vsQuestion.Add(questionBlocks[counter].id);
                                     vsAnswer.Add(Convert.ToInt32(ControlRadioButton()));
-                                  //  questionBlocks.Remove(questionBlocks[counter]);
+                                    //  questionBlocks.Remove(questionBlocks[counter]);
 
                                 }
 
@@ -597,41 +724,125 @@ namespace Quiz
             }
             if (button.Text == "Sub")
             {
-
                 null_ = questionBlocks.Count - vsQuestion.Count;
                 ResetForm();
-                point.Y = 97;
+                point.Y = 30;
                 counter = 0;
                 AsciCounter = 0;
+                YLocation = 0;
+                ////  FormLoad("");
+                //for (int i = 0; i < questionBlocks.Count; i++)
+                //{
+
+
+                //    CreateTextLabel(questionBlocks[counter].Text, counter.ToString(), false);
+                //    point.Y = YLocation + 70;
+                //    foreach (var item in questionBlocks[counter].Answers)
+                //    {
+                //        CreateAnswerLabel(item.Text, false);
+                //        createRadioButton(item.id.ToString());
+                //        AsciCounter++;
+                //        point.Y += 40;
+                //    }
+                //    counter++;
+                //    AsciCounter = 0;
+                //}
+
+                //for (int i = 0; i < questionBlocks_.Count; i++)
+                //{
+                //    CreateTextLabel(questionBlocks_[i].Text, counter.ToString(), false);
+                //        point.Y += 60;
+                //    AsciCounter = 0;
+                //    for (int j = 0; j < questionBlocks_[i].Answers.Count; j++)
+                //    {
+                //        createRadioButton(questionBlocks_[i].Answers[j].id.ToString());
+                //        RadioButtonEnable();
+
+                //        string  a = vsQuestion.Find(x => x == questionBlocks_[i].id).ToString();
+                //        int b = vsQuestion.FindIndex(x => x == questionBlocks_[i].id);
+                //        if (a == "0")
+                //        {
+                //            if (questionBlocks_[i].Answers[j].IsCorrect =="Yes")
+                //            {
+                //                color = "Green";
+                //                CreateAnswerLabel(questionBlocks_[i].Answers[j].Text, false);
+                //                AsciCounter++;
+                //                point.Y += 40;
+                //            }
+                //            else
+                //            {
+                //              //  color = "Red";
+                //                CreateAnswerLabel(questionBlocks_[i].Answers[j].Text, false);
+                //                AsciCounter++;
+                //                point.Y += 40;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if(questionBlocks_[i].Answers[j].id==vsAnswer[b] && questionBlocks_[i].Answers[j].IsCorrect=="Yes")
+                //            {
+                //            color = "Green";
+                //            CreateAnswerLabel(questionBlocks_[i].Answers[j].Text, false);
+                //            AsciCounter++;
+                //            point.Y += 40;
+                //            }
+                //            //if (questionBlocks_[i].Answers[j].id == vsAnswer[b] && questionBlocks_[i].Answers[j].IsCorrect == "Yes")
+                //            //{
+                //            //    color = "Green";
+                //            //    CreateAnswerLabel(questionBlocks_[i].Answers[j].Text, false);
+                //            //    AsciCounter++;
+                //            //    point.Y += 40;
+                //            //}
+
+
+                //        }
+
+
+
+                //    }
+
+
+                //}
+
+
+
+
                 for (int i = 0; i < questionBlocks_.Count; i++)
                 {
                     CreateTextLabel(questionBlocks_[i].Text, counter.ToString(), false);
-                    point.Y += 100;
+                    point.Y += 60;
                     for (int j = 0; j < questionBlocks_[i].Answers.Count; j++)
                     {
+                        createRadioButton(questionBlocks_[i].Answers[j].id.ToString());
+                        RadioButtonEnable();
                         for (int q = 0; q < vsQuestion.Count; q++)
                         {
                             if (vsQuestion[q] == questionBlocks_[i].id)
                             {
                                 if (vsAnswer[q] == questionBlocks_[i].Answers[j].id)
                                 {
+
                                     if (questionBlocks_[i].Answers[j].IsCorrect == "Yes")
                                     {
-                                        PictureBox("Yes");
+                                       PictureBox("Yes");
                                         correct++;
-                                        PictureBox("");
+                                      //  PictureBox("");
+                                      //  color = "Green";
                                     }
                                     else
                                     {
-                                        PictureBox("");
+                                      //  PictureBox("");
 
-                                        PictureBox("No");
+                                         PictureBox("No");
+                                        //color = "Red";
+
                                         wrong++;
                                         for (int t = 0; t < questionBlocks_[i].Answers.Count; t++)
                                         {
                                             if (questionBlocks_[i].Answers[t].IsCorrect == "Yes")
                                             {
-                                                PictureBox("Yes");
+                                                 PictureBox("Yes");
+                                               // color = "Green";
                                             }
                                         }
                                     }
@@ -641,7 +852,9 @@ namespace Quiz
                             {
                                 if (questionBlocks_[i].Answers[j].IsCorrect == "Yes")
                                 {
-                                    PictureBox("Yes");
+                                   // color = "Green";
+
+                                     PictureBox("Yes");
                                 }
                             }
 
@@ -655,13 +868,14 @@ namespace Quiz
                                     if (questionBlocks_[i].Answers[j].IsCorrect == "Yes")
                                     {
                                         PictureBox("Yes");
+                                        //color = "Red";
                                     }
                                 }
                             }
                         }
                         CreateAnswerLabel(questionBlocks_[i].Answers[j].Text, false);
                         AsciCounter++;
-                        point.Y += 70;
+                        point.Y += 40;
 
                     }
                     counter++;
@@ -675,13 +889,14 @@ namespace Quiz
         {
             if (a == 0)
             {
-                StreamReader streamReader = new StreamReader(Path_);
+                
+                StreamReader streamReader = new StreamReader($"Quiz\\{Path_}");
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<QuestionBlock>));
                 var obj = (List<QuestionBlock>)xmlSerializer.Deserialize(streamReader);
                 a++;
                 questionBlock = obj;
 
-              //  questionBlocks = obj;
+                //  questionBlocks = obj;
                 do
                 {
                     bool q = false;
@@ -722,7 +937,7 @@ namespace Quiz
                                 class1Q.Answers.Add(class1A);
                                 RandomAnswer.Add(answercounter);
                             }
-                        } while (questionBlock[counter].Answers.Count != RandomAnswer.Count );
+                        } while (questionBlock[counter].Answers.Count != RandomAnswer.Count);
                         RandomAnswer.Clear();
                         questionBlocks_.Add(class1Q);
                     }
@@ -757,18 +972,18 @@ namespace Quiz
                     counter = 0;
                     break;
             }
-            point.Y = 97;
-            
+            point.Y = 30;
             CreateTextLabel(questionBlocks[counter].Text, counter.ToString(), false);
-            point.Y += 100;
+            point.Y = YLocation+ 70;
             foreach (var item in questionBlocks[counter].Answers)
             {
                 CreateAnswerLabel(item.Text, false);
                 createRadioButton(item.id.ToString());
                 AsciCounter++;
-                point.Y += 70;
+                point.Y += 40;
             }
             point.X = 300;
+
             createButton("Sub", true);
             point.X = 200;
             if (counter == questionBlocks.Count - 1)
@@ -791,56 +1006,67 @@ namespace Quiz
             point.X = 100;
             createButton("Accept", true);
         }
-            ListView listView = new ListView();
+        ListView listView = new ListView();
         void SelectBook()
         {
             string[] File;
-            listView.Location = new Point(100,300);
-            listView.Size = new Size(300,300);
+            listView.Location = new Point(170, 58);
+            listView.Size = new Size(408, 199);
             this.Controls.Add(listView);
             listView.SelectedIndexChanged += ListView_SelectedIndexChanged;
-            if(Directory.Exists("Quiz"))
+            if (Directory.Exists("Quiz"))
             {
-          File=Directory.GetFiles("Quiz");
-
+                File = Directory.GetFiles("Quiz");
+             
                 foreach (var item in File)
                 {
 
-                    if(item.Contains(".xml"))
+                    if (item.Contains(".xml"))
                     {
                         string path = Path.GetFileName(item);
                         listView.Items.Add(path);
+                     
                     }
                 }
             }
         }
-
         private void ListView_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string[] File;
+
+            File = Directory.GetFiles("Quiz");
+
             Path_ = listView.SelectedItems[0].Text.ToString();
+            foreach (var item in File)
+            {
+
+                if (item.Contains(Path_))
+                {
+                    Path_ = Path.GetFileName(item);
+                }
+            }
             ResetForm();
             ControlSizeQuiz();
         }
         void ControlSizeQuiz()
         {
             TextBox textBox = new TextBox();
-            textBox.Location = new Point(78,88);
-            textBox.Size = new Size(75,75);
+            textBox.Location = new Point(282, 140);
+            textBox.Size = new Size(100, 20);
             this.Controls.Add(textBox);
-            point.X = 60;
-            point.X = 75;
+            point.X = 256;
+            point.Y = 218;
             createButton("Size", true);
         }
-
-     
-
-        public Form2()
+        public Form2(Form1 form1)
         {
             InitializeComponent();
-            SelectBook();
-           // FormLoad("");
-        }
 
+            this.Size = new Size (674,340);
+            form1.Enabled = false;
+            SelectBook();
+            // FormLoad("");
+        }
         private void Form2_Load(object sender, EventArgs e)
         {
 

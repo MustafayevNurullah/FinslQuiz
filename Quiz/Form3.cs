@@ -17,8 +17,9 @@ namespace Quiz
 {
     public partial class Form3 : Form
     {
-        public Form3()
+        public Form3(Form1 form1)
         {
+            form1.Enabled=false;
             InitializeComponent();
         }
         #region List
@@ -182,7 +183,7 @@ namespace Quiz
                     if (item is TextBox textBox)
                     {
                         // MessageBox.Show("Texbox NAme"+textBox.Name);
-                        if (textBox.Name == number && textBox.Location.Y > 70)
+                        if (textBox.Name == number && textBox.Location.Y > 50)
                         {
                             return textBox.Text;
                         }
@@ -305,8 +306,40 @@ namespace Quiz
                 }
             }
         }
+        int YLocation;
         void CreateTextLabel(string Text, string Name, bool bool_)
         {
+
+            TextBox label = new TextBox();
+            YLocation = 0;
+            label.Multiline = true;
+            if (Text.Length < 60)
+            {
+                label.Size = new Size(450, 25);
+                YLocation = 0;
+
+            }
+            if (Text.Length > 60 && Text.Length < 120)
+            {
+                YLocation = 10;
+
+                label.Size = new Size(450, 35);
+
+            }
+            if (Text.Length > 120 && Text.Length < 280)
+            {
+                YLocation = 20;
+
+                label.Size = new Size(450, 45);
+
+            }
+            // label.Size = new Size(450,25);
+            label.Location = new Point(127, point.Y);
+            label.Name = "Test";
+            label.Enabled = bool_;
+            label.Text = Text;
+            this.Controls.Add(label);
+            /*
             TextBox label = new TextBox();
             label.Size = new Size(571, 81);
             label.Location = new Point(197, point.Y);
@@ -315,17 +348,44 @@ namespace Quiz
             label.Text = Text;
             label.ScrollBars = ScrollBars.Horizontal;
             this.Controls.Add(label);
+            */
         }
         void CreateAnswerLabel(string Text, bool bool_)
         {
             TextBox label = new TextBox();
-            label.Size = new Size(464, 44);
-            label.Location = new Point(200, point.Y);
+            label.Multiline = true;
+            label.Location = new Point(152, point.Y);
+            if (Text.Length < 55)
+            {
+                label.Size = new Size(425, 25);
+                YLocation = 0;
+            }
+            if (Text.Length > 55 && Text.Length < 110)
+            {
+                label.Size = new Size(425, 35);
+                YLocation = 10;
+                point.Y += 10;
+            }
+            if (Text.Length > 110 && Text.Length < 265)
+            {
+                point.Y += 20;
+                YLocation = 20;
+                label.Size = new Size(425, 45);
+            }
+            // label.Size = new Size(464, 44);
             //  MessageBox.Show(AsciCounter.ToString());
             label.Enabled = bool_;
             label.Name = AsciCounter.ToString();
-            label.Text =  Text;
+            label.Text = Text;
             this.Controls.Add(label);
+            //TextBox label = new TextBox();
+            //label.Size = new Size(464, 44);
+            //label.Location = new Point(200, point.Y);
+            ////  MessageBox.Show(AsciCounter.ToString());
+            //label.Enabled = bool_;
+            //label.Name = AsciCounter.ToString();
+            //label.Text =  Text;
+            //this.Controls.Add(label);
         }
         void _CreateanswerLabel(string Name)
         {
@@ -333,7 +393,7 @@ namespace Quiz
             label.Size = new Size(15, 15);
             label.Text = Asci[AsciCounter];
             label.Name = AsciCounter.ToString();
-            label.Location = new Point(180, point.Y - 13);
+            label.Location = new Point(138, point.Y+2 );
 
             this.Controls.Add(label);
         }
@@ -341,10 +401,10 @@ namespace Quiz
         {
             
             Label label = new Label();
-            label.Size = new Size(40, 25);
+            label.Size = new Size(20, 25);
             label.Text = counter.ToString();
             label.Name = AsciCounter.ToString();
-            label.Location = new Point(180, point.Y+2);
+            label.Location = new Point(110, point.Y+2);
             this.Controls.Add(label);
         }
         void createButton(string Text, bool enable)
@@ -357,17 +417,19 @@ namespace Quiz
             this.Controls.Add(button);
             button.Click += Button_Click;
         }
+        bool drag = false;
         void createRadioButton(string Name)
         {
             RadioButton radioButton = new RadioButton();
             radioButton.Size = new Size(15, 15);
-            radioButton.Location = new Point(160, point.Y - 13);
+            radioButton.Location = new Point(124, point.Y);
             radioButton.Name = Name;
             this.Controls.Add(radioButton);
            radioButton.Click += RadioButton_Click;
+          //  MessageBox.Show(createQuestionCounter.ToString());
             if(createQuestionCounter<questionBlock.Count)
             {
-                if(questionBlock[createQuestionCounter].Answers[Convert.ToInt32(Name)].IsCorrect=="Yes")
+                if (questionBlock[createQuestionCounter].Answers[Convert.ToInt32(Name)].IsCorrect == "Yes" )
                 {
                     radioButton.Checked = true;
                 }
@@ -394,7 +456,7 @@ namespace Quiz
                     {
                         if (Button.Text == "Remove")
                         {
-                            if (ControlRadioButton() != string.Empty)
+                            if (AsciCounter!=0)
                             {
                                 Button.Enabled = true;
                             }
@@ -674,31 +736,31 @@ namespace Quiz
                 ReadList();
                 AsciCounter = 0;
                 ResetForm();
-                point.Y = 36;
+                point.Y =30;
                 counter++;
                 CreateTextLabel(string.Empty, string.Empty, true);
                 _CreateTextLabel(string.Empty);
                 point.X = 803;
-                point.Y = 297;
+                point.Y = 150;
                 createButton("Add", true);
-                point.Y = 197;
-                createButton("Remove", false);
-                point.Y = 97;
-                createButton("Delete Page", true);
                 point.Y = 120;
+                createButton("Remove", false);
+                point.Y = 90;
+                //createButton("Delete Page", true);
+                //point.Y = 120;
                 createButton("AddPage", false);
-                point.X = 36;
+                point.X = 20;
                 point.Y = 36;
                 createButton("Save", false);
                 TextBox label = new TextBox();
                 label.Size = new Size(100, 81);
-                label.Location = new Point(point.X, point.Y-20);
+                label.Location = new Point(point.X-10, point.Y-20);
                 label.Name = "Save";
                 this.Controls.Add(label);
-                point.Y = 477;
-                point.X = 200;
+                point.Y = 200;
+                point.X = 803;
                 createButton("Next", false);
-                point.X = 100;
+                point.X = 720;
                 createButton("Back", false);
                 ButonEnableTrue();
                 createQuestionCounter++;
@@ -743,16 +805,20 @@ namespace Quiz
                 {
                     foreach (var item in Controls)
                     {
-                        if(q &&  item is TextBox textBox)
+                        if(q &&  item is TextBox textBox && textBox.Name=="Save")
                         {
                             q = false;
                             if(Directory.Exists("Quiz") && textBox.Text!=string.Empty)
                             {
-                                StreamWriter sw = new StreamWriter($"Quiz\\{textBox.Text}.xml");
+                                button.Enabled = false;
+                               
+                                StreamWriter sw = new StreamWriter($"Quiz\\{ textBox.Text }.xml");
                                 serializer.Serialize(sw, questionBlock);
                             }
                             else if( textBox.Text != string.Empty)
                             {
+                                button.Enabled = false;
+
                                 Directory.CreateDirectory("Quiz");
                                StreamWriter sw = new StreamWriter($"Quiz\\{textBox.Text}.xml");
                                 serializer.Serialize(sw, questionBlock);
@@ -764,14 +830,18 @@ namespace Quiz
             if (button.Text == "Add")
             {
                 if (AsciCounter == 0)
+                {
                     point.Y = 197;
+                    point.Y = YLocation + 70;
+
+                }
                 if (point.Y > 110)
                 {
                     ButonEnableTrue();
                 }
                 if (point.Y > 40)
                 {
-                 
+                    //MessageBox.Show(point.Y.ToString());
                     CreateAnswerLabel(string.Empty, true);
                     createRadioButton(AsciCounter.ToString());
                     _CreateanswerLabel(AsciCounter.ToString());
@@ -779,7 +849,7 @@ namespace Quiz
                     radiobuttonconter++;
                     ButonEnableTrue();
                 }
-                point.Y += 70;
+                point.Y += 40;
             }
             if (button.Text == "Next")
             {
@@ -789,55 +859,62 @@ namespace Quiz
                     createQuestionCounter++;
                     ResetForm();
                     point.Y = 36;
-                    CreateTextLabel(questionBlock[createQuestionCounter].Text, string.Empty, true);
-                    _CreateTextLabel(string.Empty);
-                    AsciCounter = 0;
-                    for (int i = 0; i < questionBlock[createQuestionCounter].Answers.Count; i++)
-                    {
-                        point.Y += 70;
-                        CreateAnswerLabel(questionBlock[createQuestionCounter].Answers[i].Text, true);
-                        _CreateanswerLabel(radiobuttonconter.ToString());
-                        createRadioButton(AsciCounter.ToString());
-                        AsciCounter++;
-                    }
-                    AsciCounter = questionBlock[createQuestionCounter ].Answers.Count;
+                CreateTextLabel(questionBlock[createQuestionCounter].Text, string.Empty, true);
+                _CreateTextLabel(string.Empty);
+                AsciCounter = 0;
+                point.Y = YLocation + 70;
+                for (int i = 0; i < questionBlock[createQuestionCounter].Answers.Count; i++)
+                {
+
+                    CreateAnswerLabel(questionBlock[createQuestionCounter].Answers[i].Text, true);
+                    _CreateanswerLabel(radiobuttonconter.ToString());
+                    createRadioButton(AsciCounter.ToString());
+                    AsciCounter++;
+                    point.Y += 40;
+                }
+                AsciCounter = questionBlock[createQuestionCounter ].Answers.Count;
                     pointy_ = point.Y;
-                    point.X = 803;
-                    point.Y = 297;
-                    createButton("Add", true);
-                    point.Y = 197;
+                point.X = 803;
+                point.Y = 150;
+                createButton("Add", true);
+                    point.Y = 120;
                     createButton("Remove", false);
-                    point.Y = 97;
-                createButton("Delete Page", true);
-                point.Y = 120;
+                    point.Y = 90;
+                //createButton("Delete Page", true);
+                //point.Y = 120;
                 createButton("AddPage", true);
-                    point.X = 36;
+                    point.X = 20;
                     point.Y = 36;
                     createButton("Save", false);
-                    point.Y = 477;
+                    point.Y = 200;
                     if (createQuestionCounter == questionBlock.Count-1  )
                     {
-                        point.X = 200;
+                        point.X = 803;
                         createButton("Next", false);
-                        point.X = 100;
+                        point.X = 720;
                         createButton("Back", true);
                     }
                     else
                     {
-                        point.X = 200;
+                        point.X = 803;
                         createButton("Next", true);
-                        point.X = 100;
+                        point.X = 720;
                         createButton("Back", true);
                     }
 
-                    point.X = 803;
-                    point.Y = 297;
-                    createButton("Add", true);
+                    //point.X = 803;
+                    //point.Y = 297;
+                    //createButton("Add", true);
                     point.Y = 197;
-                    point.X = 36;
+                    point.X = 20;
                     point.Y = 36;
                     createButton("Save", true);
+                TextBox label = new TextBox();
+                label.Size = new Size(100, 81);
+                label.Location = new Point(point.X-10, point.Y - 20);
                     point.Y = pointy_+70;
+                label.Name = "Save";
+                this.Controls.Add(label);
             }
             if (button.Text == "Back")
             {
@@ -847,44 +924,51 @@ namespace Quiz
                     createQuestionCounter--;
                     ResetForm();
                     point.Y = 36;
-                    CreateTextLabel(questionBlock[createQuestionCounter].Text, string.Empty, true);
-                    _CreateTextLabel(string.Empty);
-                    AsciCounter = 0;
-                    for (int i = 0; i < questionBlock[createQuestionCounter].Answers.Count; i++)
-                    {
-                        point.Y += 70;
-                        CreateAnswerLabel(questionBlock[createQuestionCounter].Answers[i].Text, true);
-                        _CreateanswerLabel(radiobuttonconter.ToString());
-                        createRadioButton(AsciCounter.ToString());
-                        AsciCounter++;
-                    }
-                    pointy = point.Y;
+                CreateTextLabel(questionBlock[createQuestionCounter].Text, string.Empty, true);
+                _CreateTextLabel(string.Empty);
+                AsciCounter = 0;
+                point.Y = YLocation + 70;
+                for (int i = 0; i < questionBlock[createQuestionCounter].Answers.Count; i++)
+                {
+
+                    CreateAnswerLabel(questionBlock[createQuestionCounter].Answers[i].Text, true);
+                    _CreateanswerLabel(radiobuttonconter.ToString());
+                    createRadioButton(AsciCounter.ToString());
+                    AsciCounter++;
+                    point.Y += 40;
+                }
+                pointy = point.Y;
                     AsciCounter = 0;
                     point.X = 803;
-                    point.Y = 297;
+                    point.Y = 150;
                     createButton("Add", true);
-                    point.Y = 197;
+                    point.Y = 120;
                     createButton("Remove", false);
-                    point.Y = 97;
-                createButton("Delete Page", true);
-                point.Y = 120;
+                    point.Y = 90;
+                //createButton("Delete Page", true);
+                //point.Y = 120;
                 createButton("AddPage", true);
-                    point.X = 36;
+                    point.X = 20;
                     point.Y = 36;
                     createButton("Save", false);
-                    point.Y = 477;
-                    if (createQuestionCounter == 0)
+                TextBox label = new TextBox();
+                label.Size = new Size(100, 81);
+                label.Location = new Point(point.X-10, point.Y - 20);
+                    point.Y = 200;
+                label.Name = "Save";
+                this.Controls.Add(label);
+                if (createQuestionCounter == 0)
                     {
-                        point.X = 200;
+                        point.X = 803;
                         createButton("Next", true);
-                        point.X = 100;
+                        point.X = 720;
                         createButton("Back", false);
                     }
                     if (questionBlock.Count != 0 && createQuestionCounter <= questionBlock.Count)
                 {
-                        point.X = 200;
+                        point.X = 803;
                         createButton("Next", true);
-                    point.X = 100;
+                    point.X = 720;
                     createButton("Back", true);
                 }
                     point.Y = pointy+70;
@@ -897,14 +981,6 @@ namespace Quiz
         {
             if (a == 0)
             {
-
-
-
-
-
-
-
-
                 //QuestionBlock questionBloc = new QuestionBlock();
                 //questionBloc.id = 100;
                 //questionBloc.Text = "Salam Kele";
@@ -1032,20 +1108,97 @@ namespace Quiz
         }
         public void Form3_Load(object sender, EventArgs e)
         {
+            Form1 form1 = new Form1();
+            form1.Enabled = false;
             point.X = 803;
             point.Y = 97;
             createButton("AddPage", true);
           
         }
-
         private void Form3_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             foreach (var item in files)
             {
-                MessageBox.Show(item);
+                Path = item;
+                StreamReader streamReader = new StreamReader(Path);
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<QuestionBlock>));
+                var obj = (List<QuestionBlock>)xmlSerializer.Deserialize(streamReader);
+                a++;
+                questionBlock = obj;
+                Dragg();
             }
+            
         }
+
+        void Dragg()
+        {
+            drag = true;
+            int pointy_ = 0;
+           // ReadList();
+            counter++;
+            createQuestionCounter++;
+            ResetForm();
+            point.Y = 30;
+            CreateTextLabel(questionBlock[createQuestionCounter].Text, string.Empty, true);
+            _CreateTextLabel(string.Empty);
+            AsciCounter = 0;
+            point.Y = YLocation + 70;
+            for (int i = 0; i < questionBlock[createQuestionCounter].Answers.Count; i++)
+            {
+               
+                CreateAnswerLabel(questionBlock[createQuestionCounter].Answers[i].Text, true);
+                _CreateanswerLabel(radiobuttonconter.ToString());
+                createRadioButton(AsciCounter.ToString());
+                AsciCounter++;
+                point.Y += 40;
+            }
+            AsciCounter = questionBlock[createQuestionCounter].Answers.Count;
+            pointy_ = point.Y;
+            point.X = 803;
+            point.Y = 150;
+            createButton("Add", true);
+            point.Y = 97;
+            createButton("Remove", false);
+            point.Y = 70;
+            //createButton("Delete Page", true);
+            //point.Y = 90;
+            createButton("AddPage", true);
+            point.X = 20;
+            point.Y = 36;
+            createButton("Save", false);
+            TextBox label = new TextBox();
+            label.Size = new Size(100, 81);
+            label.Location = new Point(point.X-10, point.Y - 20);
+            label.Name = "Save";
+            point.Y = 200;
+            this.Controls.Add(label);
+            if (createQuestionCounter == questionBlock.Count - 1)
+            {
+                point.X = 803;
+                createButton("Next", false);
+                point.X = 720;
+                createButton("Back", true);
+            }
+            else
+            {
+                point.X = 803;
+                createButton("Next", true);
+                point.X = 720;
+                createButton("Back", true);
+            }
+
+            //point.X = 803;
+            //point.Y = 297;
+            //createButton("Add", true);
+            point.Y = 197;
+            point.X = 36;
+            point.Y = 36;
+            //createButton("Save", true);
+            point.Y = pointy_ + 70;
+        }
+
+
 
         private void Form3_DragEnter(object sender, DragEventArgs e)
         {
